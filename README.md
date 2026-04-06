@@ -4,8 +4,8 @@
 > Track your small daily wins. Build momentum. Feel good about yourself.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://opensource.org/licenses/MIT)
-[![Single File](https://img.shields.io/badge/size-single%20HTML%20file-brightgreen)](./小勝利日記.html)
-[![No Install](https://img.shields.io/badge/install-none%20required-blue)](./小勝利日記.html)
+[![Single File](https://img.shields.io/badge/size-single%20HTML%20file-brightgreen)](./DailyWins.html)
+[![No Install](https://img.shields.io/badge/install-none%20required-blue)](./DailyWins.html)
 
 ---
 
