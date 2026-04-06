@@ -835,7 +835,7 @@ function updateHeader() {
         `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 星期${days[now.getDay()]}`;
     const h = now.getHours();
     document.getElementById('greeting').textContent =
-        h < 5 ? '深夜好 🌙' : h < 12 ? '早安 ☀️' : h < 18 ? '午安 🌤' : '晚安 🌛';
+        h < 5 ? '晚安 🌙' : h < 12 ? '早安 ☀️' : h < 18 ? '午安 🌤' : '晚安 🌛';
     document.getElementById('streakNum').textContent = calcStreak();
 }
 
