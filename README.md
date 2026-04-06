@@ -154,4 +154,4 @@ Free to use, modify, and redistribute.
 
 ---
 
-*Made with ❤️ as part of [Project Eva](https://github.com/yingchu/Daily-wins) — building small tools for a better daily life.*
+*Made with ❤️ as part of [Project Eva](https://github.com/yingchu/Daily-wins) — building small tools for a positive daily life.*
