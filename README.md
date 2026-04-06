@@ -15,7 +15,7 @@ Track your small daily wins. Build momentum. Feel good about yourself.
 ## 為什麼要做這個？ / Why?
 
 健康手環和大型 App 的習慣追蹤功能，用起來往往沒什麼成就感——通知太多、介面太複雜。
-這個工具只做一件事：**讓你每天打幾個勾，然後感覺很好。**
+這個工具只做一件事：**讓你每天打幾個勾，然後自我感覺良好，就可以維持下去。**
 
 Most habit-tracking apps feel overwhelming. Notifications. Subscriptions. Too many features.
 This tool does one thing well: **let you check off your daily habits and feel great about it.**
