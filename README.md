@@ -1,21 +1,18 @@
-# Daily-wins 小勝利記錄器
-每天記錄小小的成功，讓大腦感受到成就感，養成好習慣。
-Track your small daily wins. Build momentum. Feel good about yourself.
 # 小勝利日記 · Daily Wins Tracker ✨
 
 > 每天記錄小小的成功，讓大腦感受到成就感，養成好習慣。
 > Track your small daily wins. Build momentum. Feel good about yourself.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://opensource.org/licenses/MIT)
-[![Single File](https://img.shields.io/badge/size-single%20HTML%20file-brightgreen)](./DailyWins.html)
-[![No Install](https://img.shields.io/badge/install-none%20required-blue)](./DailyWins.html)
+[![Single File](https://img.shields.io/badge/size-single%20HTML%20file-brightgreen)](./小勝利日記.html)
+[![No Install](https://img.shields.io/badge/install-none%20required-blue)](./小勝利日記.html)
 
 ---
 
 ## 為什麼要做這個？ / Why?
 
 健康手環和大型 App 的習慣追蹤功能，用起來往往沒什麼成就感——通知太多、介面太複雜。
-這個工具只做一件事：**讓你每天打幾個勾，然後自我感覺良好，就可以維持下去。**
+這個工具只做一件事：**讓你每天打幾個勾，自我感覺良好，持續達到目標。**
 
 Most habit-tracking apps feel overwhelming. Notifications. Subscriptions. Too many features.
 This tool does one thing well: **let you check off your daily habits and feel great about it.**
@@ -46,7 +43,7 @@ This tool does one thing well: **let you check off your daily habits and feel gr
 ### 最簡單的方式 / Easiest way
 
 1. 下載 `DailyWins.html` / Download `DailyWins.html`
-2. 開啟檔案（建議用 Chrome 或 Edge）/ Double-click to open (Chrome or Edge recommended)
+2. 雙擊開啟（建議用 Chrome 或 Edge）/ Double-click to open (Chrome or Edge recommended)
 3. 選擇「全新開始」或開啟已有的資料檔 / Choose "Start Fresh" or open an existing data file
 4. 開始打勾！/ Start checking off habits!
 
@@ -61,17 +58,37 @@ Settings → Pages → Source: Deploy from a branch → main / (root)
 
 ---
 
-## 瀏覽器支援 / Browser Compatibility
+## 資料儲存模式 / Storage Modes
 
-| 瀏覽器 / Browser | 自動存檔 / Auto-save | 備用匯出 / JSON Export |
+本工具會自動偵測瀏覽器，選擇最適合的儲存方式：
+The tool auto-detects your browser and picks the best storage method:
+
+### 💻 桌機版（Chrome / Edge 86+）
+
+使用 [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)，
+您可以選擇把 JSON 資料檔儲存在電腦上任何位置。
+每次打勾後按 💾 儲存即可寫回同一個檔案。
+
+Desktop Chrome/Edge: Uses the File System Access API to read/write a `.json` file you choose on your computer.
+
+### 📱 手機版 / Safari / Firefox
+
+資料自動存在**瀏覽器的 localStorage**，不需要手動存檔。
+每次打勾後立即自動儲存，下次開啟頁面會自動讀回。
+建議定期到「習慣」頁面匯出 JSON 備份，以防換瀏覽器或清快取時遺失。
+
+Mobile / Safari / Firefox: Data is **auto-saved to localStorage** — no manual saving needed.
+Tip: Export a JSON backup regularly in case you switch browsers or clear cache.
+
+### 瀏覽器對照表 / Browser Compatibility
+
+| 瀏覽器 / Browser | 儲存方式 / Storage | JSON 匯出備份 |
 |:---|:---:|:---:|
-| Chrome 86+       | ✅ | ✅ |
-| Edge 86+         | ✅ | ✅ |
-| Safari           | ❌ | ✅ |
-| Firefox          | ❌ | ✅ |
-
-> **為什麼推薦 Chrome / Edge？**
-> 這兩個瀏覽器支援 [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)，可以直接讀寫你電腦上的 JSON 檔案，不需要每次手動下載備份。
+| Chrome 86+（桌機）| File System API ✅ | ✅ |
+| Edge 86+（桌機）  | File System API ✅ | ✅ |
+| Chrome（手機）    | localStorage 自動 ✅ | ✅ |
+| Safari            | localStorage 自動 ✅ | ✅ |
+| Firefox           | localStorage 自動 ✅ | ✅ |
 
 ---
 
@@ -154,4 +171,4 @@ Free to use, modify, and redistribute.
 
 ---
 
-*Made with ❤️ as part of [Project Eva](https://github.com/yingchu/Daily-wins) — building small tools for a positive daily life.*
+*Made with ❤️ as part of [Project Eva](https://github.com/yingchu/Daily-wins) — building small tools for a better daily life.*
