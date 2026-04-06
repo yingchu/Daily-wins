@@ -558,6 +558,8 @@
  */
 
 // ── 常數 ──────────────────────────────────────────────────────
+const LS_KEY = 'dailywins_v1'; // localStorage 的鍵值（手機版用）
+
 const EMOJIS = [
     '🌙','☀️','💧','🏃','📚','🥗','😴','🧘','💪','✏️',
     '🎯','🎨','🎵','❤️','🌿','☕','🚶','🍎','📝','🌟',
@@ -623,9 +625,24 @@ function parseData(jsonStr) {
     return null;
 }
 
-// ── File System Access API ────────────────────────────────────
-/** 是否支援 File System Access API */
+// ── 平台偵測 ──────────────────────────────────────────────────
+/**
+ * 是否支援 File System Access API（桌機 Chrome / Edge 86+）
+ * 不支援時（手機、Safari、Firefox）改用 localStorage 自動儲存。
+ */
 const supportsFileSystemAccess = !!window.showOpenFilePicker;
+
+/**
+ * 手機模式：將資料自動存入 localStorage
+ * 每次資料有變更時自動呼叫，使用者不需要手動存檔。
+ */
+function autoSaveToLocalStorage() {
+    try {
+        localStorage.setItem(LS_KEY, JSON.stringify(appData));
+    } catch(e) {
+        console.warn('localStorage 儲存失敗：', e);
+    }
+}
 
 /**
  * 開啟已有的 JSON 資料檔案
@@ -666,9 +683,10 @@ async function openExistingFile() {
 
 /** 全新開始，使用預設習慣 */
 function startFresh() {
-    appData   = createEmptyData();
+    appData    = createEmptyData();
     fileHandle = null;
-    isDirty   = false;
+    isDirty    = false;
+    if (!supportsFileSystemAccess) autoSaveToLocalStorage(); // 手機版立即存入
     showApp();
 }
 
@@ -735,8 +753,17 @@ async function handleImportJSON(e) {
 // ── 儲存狀態管理 ──────────────────────────────────────────────
 function markDirty() {
     isDirty = true;
-    document.getElementById('saveBtn').classList.add('unsaved');
-    document.getElementById('saveStatus').textContent = '⚠️ 有未儲存的變更';
+    if (!supportsFileSystemAccess) {
+        // 手機版：資料變更後立即自動存入 localStorage
+        autoSaveToLocalStorage();
+        isDirty = false;
+        document.getElementById('saveBtn').classList.remove('unsaved');
+        document.getElementById('saveStatus').textContent = '✅ 已自動儲存';
+    } else {
+        // 桌機版：標記未儲存，等使用者手動按存檔
+        document.getElementById('saveBtn').classList.add('unsaved');
+        document.getElementById('saveStatus').textContent = '⚠️ 有未儲存的變更';
+    }
 }
 function markSaved() {
     isDirty = false;
@@ -744,13 +771,16 @@ function markSaved() {
     document.getElementById('saveStatus').textContent = '✅ 已儲存';
 }
 
-/** 更新「習慣」頁面中的檔案路徑顯示 */
+/** 更新「習慣」頁面中的儲存模式說明 */
 async function updateFilePathDisplay() {
     const el = document.getElementById('filePathInfo');
-    if (fileHandle) {
-        el.textContent = `目前檔案：${fileHandle.name}`;
+    if (!supportsFileSystemAccess) {
+        // 手機版
+        el.textContent = '📱 手機模式：資料自動儲存在此瀏覽器中。建議定期匯出 JSON 備份。';
+    } else if (fileHandle) {
+        el.textContent = `💾 目前檔案：${fileHandle.name}`;
     } else {
-        el.textContent = '尚未連結到任何檔案（記得存檔！）';
+        el.textContent = '⚠️ 尚未連結到任何檔案（記得存檔！）';
     }
 }
 
@@ -761,8 +791,34 @@ function showApp() {
     document.getElementById('saveBar').style.display = 'flex';
     updateFilePathDisplay();
     renderAll();
-    // 離開前提醒（若有未儲存變更）
-    window.onbeforeunload = () => isDirty ? '有未儲存的資料，確定要離開嗎？' : null;
+    if (supportsFileSystemAccess) {
+        // 桌機版：離開前提醒（若有未儲存變更）
+        window.onbeforeunload = () => isDirty ? '有未儲存的資料，確定要離開嗎？' : null;
+    }
+}
+
+/**
+ * 手機版初始化：頁面載入時自動檢查 localStorage
+ * - 有資料 → 直接進入主介面（不顯示歡迎畫面）
+ * - 沒有資料 → 顯示簡化的歡迎畫面
+ */
+function initMobileApp() {
+    const saved = localStorage.getItem(LS_KEY);
+    if (saved) {
+        const data = parseData(saved);
+        if (data) {
+            appData = data;
+            isDirty = false;
+            showApp();
+            return;
+        }
+    }
+    // 沒有舊資料，更新歡迎畫面為手機版樣式
+    document.querySelector('.welcome-warning').innerHTML = `
+        <p>📱 <strong>手機版說明</strong><br>
+        您的資料會自動儲存在瀏覽器裡，<br>
+        建議定期到「習慣」頁面匯出 JSON 備份。</p>`;
+    document.querySelector('#welcomeScreen button:first-of-type').style.display = 'none';
 }
 
 // ── 統一重新渲染 ──────────────────────────────────────────────
@@ -1048,6 +1104,13 @@ function deleteHabit() {
     closeModal('habitModal');
     renderToday(); renderManage(); updateHeader();
 }
+
+// ── 啟動 ──────────────────────────────────────────────────────
+if (!supportsFileSystemAccess) {
+    // 手機版：自動從 localStorage 載入，或顯示簡化歡迎畫面
+    initMobileApp();
+}
+// 桌機版：歡迎畫面預設已顯示，等使用者按按鈕
 
 /**
  * ════════════════════════════════════════════════════════════════
