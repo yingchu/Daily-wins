@@ -46,7 +46,7 @@ This tool does one thing well: **let you check off your daily habits and feel gr
 
 ### 最簡單的方式 / Easiest way
 
-1. 下載 `小勝利日記.html` / Download `小勝利日記.html`
+1. 下載 `DailyWins.html` / Download `DailyWins_en.html`
 2. 雙擊開啟（建議用 Chrome 或 Edge）/ Double-click to open (Chrome or Edge recommended)
 3. 選擇「全新開始」或開啟已有的資料檔 / Choose "Start Fresh" or open an existing data file
 4. 開始打勾！/ Start checking off habits!
