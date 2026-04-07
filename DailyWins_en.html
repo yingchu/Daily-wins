@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║              小勝利日記  /  Daily Wins Tracker               ║
+  ║              Daily Wins Tracker  /  小勝利日記               ║
   ║                                                              ║
-  ║  版本: 1.0.0                                                 ║
-  ║  作者: Project Eva                                           ║
-  ║  授權: MIT License                                           ║
+  ║  Version: 1.0.0  (English)                                   ║
+  ║  Author:  Project Eva                                        ║
+  ║  License: MIT                                                ║
   ║                                                              ║
   ║  MIT License                                                 ║
   ║  Copyright (c) 2026 Project Eva Contributors                  ║
@@ -26,41 +26,40 @@
   ║  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF       ║
   ║  ANY KIND, EXPRESS OR IMPLIED.                               ║
   ║                                                              ║
-  ║  ── 給工程師的說明 ──────────────────────────────────────── ║
-  ║  這是一個純前端、零依賴的單一 HTML 檔案。                    ║
-  ║  資料結構說明請見底部 DATA SCHEMA 區塊。                     ║
-  ║  歡迎 fork、修改、重新發布！                                 ║
+  ║  ── For Developers ──────────────────────────────────────── ║
+  ║  Zero-dependency single HTML file.                           ║
+  ║  See DATA SCHEMA comment at the bottom of the script.        ║
+  ║  Fork it, hack it, ship it!                                  ║
   ╚══════════════════════════════════════════════════════════════╝
 -->
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>小勝利日記 ✨</title>
-    <!-- Favicon: 橘色圓角方形 + 白色打勾 -->
+    <title>Daily Wins ✨</title>
+    <!-- Favicon: orange rounded square with white checkmark -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23E8874A'/><polyline points='7,16 13,22 25,10' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
     <style>
-        /* ── 色彩變數 ──────────────────────────────────────── */
+        /* ── Color Variables ───────────────────────────────── */
         :root {
-            --bg:           #FFF8F0;   /* 米色背景 */
-            --primary:      #E8874A;   /* 主色：溫暖橘 */
-            --primary-light:#F4A661;   /* 淺橘（漸層用） */
-            --primary-dark: #C86A30;   /* 深橘（按鈕按下） */
-            --success:      #7BAE7F;   /* 完成勾選：草綠 */
-            --text:         #5C3D2E;   /* 主文字：深咖啡 */
-            --text-light:   #9E7B6B;   /* 次要文字 */
-            --border:       #F0DDD0;   /* 邊框 */
+            --bg:           #FFF8F0;
+            --primary:      #E8874A;
+            --primary-light:#F4A661;
+            --primary-dark: #C86A30;
+            --success:      #7BAE7F;
+            --text:         #5C3D2E;
+            --text-light:   #9E7B6B;
+            --border:       #F0DDD0;
             --shadow:       rgba(92, 61, 46, 0.08);
         }
 
-        /* ── Reset ─────────────────────────────────────────── */
         *, *::before, *::after {
             margin: 0; padding: 0; box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, 'PingFang TC', 'Microsoft JhengHei', 'Segoe UI', sans-serif;
+            font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
             background: var(--bg);
             color: var(--text);
             max-width: 430px;
@@ -72,19 +71,15 @@
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             padding: 52px 20px 72px;
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
-        /* 裝飾圓形 */
         .header::before {
-            content: ''; position: absolute;
-            top: -40%; right: -15%;
+            content: ''; position: absolute; top: -40%; right: -15%;
             width: 220px; height: 220px;
             background: rgba(255,255,255,0.1); border-radius: 50%;
         }
         .header::after {
-            content: ''; position: absolute;
-            bottom: -35%; left: -8%;
+            content: ''; position: absolute; bottom: -35%; left: -8%;
             width: 160px; height: 160px;
             background: rgba(255,255,255,0.07); border-radius: 50%;
         }
@@ -92,10 +87,8 @@
             display: flex; justify-content: space-between; align-items: flex-start;
             position: relative; z-index: 1;
         }
-        .date-text  { color: rgba(255,255,255,0.85); font-size: 13px; margin-bottom: 4px; }
-        .greeting   { color: white; font-size: 22px; font-weight: 700; }
-
-        /* 儲存狀態 + 設定按鈕區 */
+        .date-text { color: rgba(255,255,255,0.85); font-size: 13px; margin-bottom: 4px; }
+        .greeting  { color: white; font-size: 22px; font-weight: 700; }
         .header-actions { display: flex; gap: 8px; align-items: center; }
         .save-btn, .settings-btn {
             background: rgba(255,255,255,0.2); border: none; border-radius: 12px;
@@ -104,14 +97,12 @@
             transition: background 0.2s;
         }
         .save-btn:active, .settings-btn:active { background: rgba(255,255,255,0.35); }
-        /* 未儲存時顯示紅點提示 */
         .save-btn.unsaved { position: relative; }
         .save-btn.unsaved::after {
             content: ''; position: absolute; top: 6px; right: 6px;
             width: 8px; height: 8px; background: #FF6B6B; border-radius: 50%;
             border: 1.5px solid rgba(255,255,255,0.8);
         }
-
         .streak-badge {
             background: rgba(255,255,255,0.2); border-radius: 20px;
             padding: 8px 16px; display: inline-flex; align-items: center;
@@ -120,7 +111,7 @@
         .streak-num   { color: white; font-size: 22px; font-weight: 800; }
         .streak-label { color: rgba(255,255,255,0.85); font-size: 13px; }
 
-        /* ── 進度卡片 ────────────────────────────────────────── */
+        /* ── Progress Card ───────────────────────────────────── */
         .progress-card {
             background: white; border-radius: 20px; padding: 16px 20px;
             margin: -38px 16px 0; box-shadow: 0 8px 30px var(--shadow);
@@ -140,7 +131,7 @@
             transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* ── 分頁按鈕 ────────────────────────────────────────── */
+        /* ── Tabs ────────────────────────────────────────────── */
         .tabs { display: flex; padding: 16px 16px 0; gap: 6px; }
         .tab {
             flex: 1; padding: 10px 6px; border: none; background: none;
@@ -150,7 +141,7 @@
         .tab.active { background: var(--primary); color: white; font-weight: 600; }
         .tab:active { opacity: 0.75; }
 
-        /* ── 主內容區 ────────────────────────────────────────── */
+        /* ── Content ─────────────────────────────────────────── */
         .content { padding: 14px 16px 100px; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -159,17 +150,17 @@
             text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
         }
 
-        /* ── 全勤橫幅 ────────────────────────────────────────── */
+        /* ── Completion Banner ───────────────────────────────── */
         .completion-banner {
             background: linear-gradient(135deg, #7BAE7F 0%, #5A9E5E 100%);
             border-radius: 16px; padding: 14px 18px;
             display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
         }
-        .banner-icon { font-size: 28px; }
+        .banner-icon  { font-size: 28px; }
         .banner-title { color: white; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
         .banner-sub   { color: rgba(255,255,255,0.88); font-size: 12px; }
 
-        /* ── 習慣項目 ────────────────────────────────────────── */
+        /* ── Habit Items ─────────────────────────────────────── */
         .habit-item {
             background: white; border-radius: 16px; padding: 14px 16px;
             margin-bottom: 10px; display: flex; align-items: center; gap: 13px;
@@ -201,7 +192,7 @@
         }
         .habit-item.completed .habit-check svg { opacity: 1; }
 
-        /* ── 新增按鈕 ────────────────────────────────────────── */
+        /* ── Add Button ──────────────────────────────────────── */
         .add-btn {
             width: 100%; padding: 14px; border: 2px dashed var(--border);
             border-radius: 16px; background: none; color: var(--text-light);
@@ -211,7 +202,7 @@
         }
         .add-btn:active { border-color: var(--primary); color: var(--primary); }
 
-        /* ── 統計卡片 ────────────────────────────────────────── */
+        /* ── Stats Cards ─────────────────────────────────────── */
         .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
         .stat-card {
             background: white; border-radius: 14px; padding: 14px 8px;
@@ -220,7 +211,7 @@
         .stat-num   { font-size: 26px; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 4px; }
         .stat-label { font-size: 11px; color: var(--text-light); }
 
-        /* ── 本週格子 ────────────────────────────────────────── */
+        /* ── Week Grid ───────────────────────────────────────── */
         .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
         .week-day  { text-align: center; }
         .week-day-label { font-size: 11px; color: var(--text-light); margin-bottom: 6px; }
@@ -232,7 +223,7 @@
         .week-dot.today  { border: 2.5px solid var(--primary); }
         .week-dot.future { opacity: 0.35; }
 
-        /* ── 月份熱力圖 ──────────────────────────────────────── */
+        /* ── Month Heatmap ───────────────────────────────────── */
         .month-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
         .month-nav   { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text); padding: 6px 10px; border-radius: 8px; }
         .month-nav:active { background: var(--border); }
@@ -247,19 +238,16 @@
         }
         .month-cell.empty  { background: none !important; }
         .month-cell.today  { outline: 2.5px solid var(--primary); outline-offset: -1px; }
-        /* 熱力圖色階：完成率 0% → 100% */
-        .heat-none { background: #FAF5F0; color: #CCC; }  /* 未來或無資料 */
+        .heat-none { background: #FAF5F0; color: #CCC; }
         .heat-0    { background: #F5ECE5; color: var(--text-light); }
         .heat-25   { background: #F4C5A0; color: #8B4513; }
         .heat-50   { background: #F0A070; color: white; }
         .heat-75   { background: #E8874A; color: white; }
         .heat-100  { background: #C86A30; color: white; font-weight: 800; }
-
-        /* 色階說明 */
         .heat-legend { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
         .heat-legend span { border-radius: 6px; padding: 3px 8px; font-size: 11px; }
 
-        /* ── 習慣管理清單 ────────────────────────────────────── */
+        /* ── Manage List ─────────────────────────────────────── */
         .manage-item {
             background: white; border-radius: 14px; padding: 13px 16px;
             margin-bottom: 9px; display: flex; align-items: center;
@@ -270,12 +258,12 @@
         .icon-btn { background: none; border: none; padding: 6px 8px; border-radius: 8px; cursor: pointer; font-size: 16px; }
         .icon-btn:active { background: #F5ECE5; }
 
-        /* ── 資料管理區塊 ────────────────────────────────────── */
+        /* ── Data Section ────────────────────────────────────── */
         .data-section { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 2px 12px var(--shadow); margin-top: 16px; }
         .data-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
         .data-desc  { font-size: 12px; color: var(--text-light); margin-bottom: 14px; line-height: 1.6; }
 
-        /* ── 底部浮動儲存欄 ──────────────────────────────────── */
+        /* ── Save Bar ────────────────────────────────────────── */
         .save-bar {
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
             width: 100%; max-width: 430px;
@@ -285,7 +273,7 @@
         }
         .save-bar-status { flex: 1; display: flex; align-items: center; font-size: 13px; color: var(--text-light); gap: 6px; }
 
-        /* ── 彈出視窗（Modal）────────────────────────────────── */
+        /* ── Modal ───────────────────────────────────────────── */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.4);
             z-index: 100; display: flex; align-items: flex-end;
@@ -317,7 +305,7 @@
         }
         .emoji-option.selected { border-color: var(--primary); background: #FFF0E6; transform: scale(1.1); }
 
-        /* ── 通用按鈕 ────────────────────────────────────────── */
+        /* ── Buttons ─────────────────────────────────────────── */
         .btn-primary {
             width: 100%; padding: 14px; background: var(--primary);
             color: white; border: none; border-radius: 14px;
@@ -335,7 +323,7 @@
         }
         .btn-secondary:active { background: var(--border); }
 
-        /* ── 慶祝粒子動畫 ────────────────────────────────────── */
+        /* ── Celebration Particles ───────────────────────────── */
         @keyframes float-up {
             0%   { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-80px) scale(1.4); }
@@ -345,19 +333,19 @@
             animation: float-up 1s forwards; z-index: 1000;
         }
 
-        /* ── 空狀態 ──────────────────────────────────────────── */
+        /* ── Empty State ─────────────────────────────────────── */
         .empty-state { text-align: center; padding: 36px 20px; color: var(--text-light); }
         .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
         .empty-state p { font-size: 14px; line-height: 1.7; }
 
-        /* ── 歡迎畫面（首次開啟）────────────────────────────── */
+        /* ── Welcome Screen ──────────────────────────────────── */
         #welcomeScreen {
             position: fixed; inset: 0; background: var(--bg);
             z-index: 200; display: flex; flex-direction: column;
             align-items: center; justify-content: center; padding: 32px;
             text-align: center;
         }
-        .welcome-icon { font-size: 72px; margin-bottom: 20px; }
+        .welcome-icon  { font-size: 72px; margin-bottom: 20px; }
         .welcome-title { font-size: 26px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
         .welcome-desc  { font-size: 15px; color: var(--text-light); line-height: 1.7; margin-bottom: 32px; }
         .welcome-warning {
@@ -369,28 +357,28 @@
 </head>
 <body>
 
-<!-- ── 歡迎畫面（首次開啟時顯示）────────────────────────────── -->
+<!-- Welcome Screen -->
 <div id="welcomeScreen">
     <div class="welcome-icon">🌟</div>
-    <div class="welcome-title">小勝利日記</div>
-    <div class="welcome-desc">每天記錄小小的成功，<br>讓大腦感受到成就感！</div>
+    <div class="welcome-title">Daily Wins</div>
+    <div class="welcome-desc">Track your small daily wins<br>and build lasting habits!</div>
     <div class="welcome-warning">
-        <p>📁 <strong>資料儲存方式</strong><br>
-        您的資料存在您自己選擇的 JSON 檔案裡，<br>
-        完全在您的電腦上，不上傳任何伺服器。</p>
+        <p>📁 <strong>How your data is stored</strong><br>
+        Your data is saved in a JSON file you choose<br>
+        on your own device — never uploaded anywhere.</p>
     </div>
     <button class="btn-primary" onclick="openExistingFile()" style="margin-bottom:12px">
-        📂 開啟已有的資料檔案
+        📂 Open Existing Data File
     </button>
     <button class="btn-secondary" onclick="startFresh()">
-        ✨ 全新開始
+        ✨ Start Fresh
     </button>
     <p style="font-size:12px;color:var(--text-light);margin-top:16px">
-        ※ 若瀏覽器不支援自動儲存，可用手動匯出備份
+        * If auto-save isn't supported, use manual JSON export as backup
     </p>
 </div>
 
-<!-- ── 主介面 ──────────────────────────────────────────────── -->
+<!-- Main App -->
 <div id="mainApp" style="display:none">
 
 <!-- Header -->
@@ -401,22 +389,21 @@
             <div class="greeting"  id="greeting"></div>
         </div>
         <div class="header-actions">
-            <!-- 儲存按鈕（有未儲存變更時顯示紅點） -->
-            <button class="save-btn" id="saveBtn" onclick="saveToFile()" title="儲存資料">💾</button>
-            <button class="settings-btn" onclick="switchTab('manage')" title="管理習慣">⚙️</button>
+            <button class="save-btn" id="saveBtn" onclick="saveToFile()" title="Save data">💾</button>
+            <button class="settings-btn" onclick="switchTab('manage')" title="Manage habits">⚙️</button>
         </div>
     </div>
     <div class="streak-badge">
         <span style="font-size:20px">🔥</span>
         <span class="streak-num" id="streakNum">0</span>
-        <span class="streak-label">天連續達成</span>
+        <span class="streak-label">day streak</span>
     </div>
 </div>
 
-<!-- 進度卡片 -->
+<!-- Progress Card -->
 <div class="progress-card">
     <div class="progress-label">
-        <span>今日進度</span>
+        <span>Today's Progress</span>
         <span class="progress-count" id="progressCount">0 / 0</span>
     </div>
     <div class="progress-bar-track">
@@ -424,38 +411,38 @@
     </div>
 </div>
 
-<!-- 分頁 -->
+<!-- Tabs -->
 <div class="tabs">
-    <button class="tab active" onclick="switchTab('today')">今天</button>
-    <button class="tab"        onclick="switchTab('week')">本週</button>
-    <button class="tab"        onclick="switchTab('month')">本月</button>
-    <button class="tab"        onclick="switchTab('manage')">習慣</button>
+    <button class="tab active" onclick="switchTab('today')">Today</button>
+    <button class="tab"        onclick="switchTab('week')">Week</button>
+    <button class="tab"        onclick="switchTab('month')">Month</button>
+    <button class="tab"        onclick="switchTab('manage')">Habits</button>
 </div>
 
-<!-- 主內容 -->
+<!-- Content -->
 <div class="content">
 
-    <!-- 今天 -->
+    <!-- Today -->
     <div id="tab-today" class="tab-content active">
         <div id="completionBanner" style="display:none" class="completion-banner">
             <span class="banner-icon">🎉</span>
             <div>
-                <div class="banner-title">今天全部完成了！</div>
-                <div class="banner-sub">你真的很棒，繼續保持 💪</div>
+                <div class="banner-title">All done for today!</div>
+                <div class="banner-sub">You're amazing, keep it up! 💪</div>
             </div>
         </div>
         <div id="habitList"></div>
-        <button class="add-btn" onclick="openAddHabit()">＋ 新增習慣</button>
+        <button class="add-btn" onclick="openAddHabit()">+ Add Habit</button>
     </div>
 
-    <!-- 本週 -->
+    <!-- Week -->
     <div id="tab-week" class="tab-content">
         <div class="stats-row" id="weekStats"></div>
-        <div class="section-title">本週每日狀況</div>
+        <div class="section-title">Daily Status This Week</div>
         <div class="week-grid" id="weekGrid"></div>
     </div>
 
-    <!-- 本月 -->
+    <!-- Month -->
     <div id="tab-month" class="tab-content">
         <div class="month-header">
             <button class="month-nav" onclick="changeMonth(-1)">◀</button>
@@ -463,18 +450,18 @@
             <button class="month-nav" onclick="changeMonth(1)">▶</button>
         </div>
         <div class="month-weekdays">
-            <div class="month-weekday">日</div><div class="month-weekday">一</div>
-            <div class="month-weekday">二</div><div class="month-weekday">三</div>
-            <div class="month-weekday">四</div><div class="month-weekday">五</div>
-            <div class="month-weekday">六</div>
+            <div class="month-weekday">Su</div><div class="month-weekday">Mo</div>
+            <div class="month-weekday">Tu</div><div class="month-weekday">We</div>
+            <div class="month-weekday">Th</div><div class="month-weekday">Fr</div>
+            <div class="month-weekday">Sa</div>
         </div>
         <div class="month-grid" id="monthGrid"></div>
         <div style="margin-top:18px">
-            <div class="section-title">本月統計</div>
+            <div class="section-title">This Month</div>
             <div class="stats-row" id="monthStats"></div>
         </div>
         <div class="heat-legend">
-            <span style="font-size:11px;color:var(--text-light)">完成率：</span>
+            <span style="font-size:11px;color:var(--text-light)">Completion:</span>
             <span class="heat-0"   style="font-size:11px">0%</span>
             <span class="heat-25"  style="font-size:11px">25%+</span>
             <span class="heat-50"  style="font-size:11px;color:white">50%+</span>
@@ -483,65 +470,65 @@
         </div>
     </div>
 
-    <!-- 習慣管理 -->
+    <!-- Habits (Manage) -->
     <div id="tab-manage" class="tab-content">
-        <div class="section-title">我的習慣清單</div>
+        <div class="section-title">My Habits</div>
         <div id="manageList"></div>
-        <button class="add-btn" onclick="openAddHabit()">＋ 新增習慣</button>
+        <button class="add-btn" onclick="openAddHabit()">+ Add Habit</button>
 
         <div class="data-section">
-            <div class="data-title">📁 資料管理</div>
-            <div class="data-desc" id="filePathInfo">資料未連結到任何檔案</div>
-            <button class="btn-secondary" onclick="saveToFile()">💾 儲存到檔案</button>
-            <button class="btn-secondary" onclick="saveAsNewFile()">📄 另存新檔</button>
-            <button class="btn-secondary" onclick="openExistingFile()">📂 開啟其他資料檔案</button>
+            <div class="data-title">📁 Data Management</div>
+            <div class="data-desc" id="filePathInfo">Not linked to any file</div>
+            <button class="btn-secondary" onclick="saveToFile()">💾 Save to File</button>
+            <button class="btn-secondary" onclick="saveAsNewFile()">📄 Save As New File</button>
+            <button class="btn-secondary" onclick="openExistingFile()">📂 Open Another File</button>
         </div>
 
         <div class="data-section" style="margin-top:12px">
-            <div class="data-title">🔄 備用方式（所有瀏覽器適用）</div>
-            <div class="data-desc">若瀏覽器不支援自動存檔，可用以下方式手動備份。</div>
-            <button class="btn-secondary" onclick="exportJSON()">⬇️ 匯出 JSON 備份</button>
-            <button class="btn-secondary" onclick="importJSON()">⬆️ 從 JSON 匯入</button>
+            <div class="data-title">🔄 Backup (All Browsers)</div>
+            <div class="data-desc">If auto-save isn't supported, use these manual options.</div>
+            <button class="btn-secondary" onclick="exportJSON()">⬇️ Export JSON Backup</button>
+            <button class="btn-secondary" onclick="importJSON()">⬆️ Import from JSON</button>
             <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImportJSON(event)">
         </div>
     </div>
-</div><!-- end .content -->
+</div>
 
 </div><!-- end #mainApp -->
 
-<!-- 底部儲存狀態列 -->
+<!-- Save Bar -->
 <div class="save-bar" id="saveBar" style="display:none">
-    <div class="save-bar-status" id="saveStatus">✅ 已儲存</div>
-    <button class="btn-primary" style="width:auto;padding:10px 20px;margin-top:0" onclick="saveToFile()">💾 儲存</button>
+    <div class="save-bar-status" id="saveStatus">✅ Saved</div>
+    <button class="btn-primary" style="width:auto;padding:10px 20px;margin-top:0" onclick="saveToFile()">💾 Save</button>
 </div>
 
-<!-- 新增 / 編輯習慣 Modal -->
+<!-- Add / Edit Habit Modal -->
 <div id="habitModal" class="modal-overlay" onclick="handleOverlayClick(event)">
     <div class="modal">
         <div class="modal-handle"></div>
-        <div class="modal-title" id="modalTitle">新增習慣</div>
+        <div class="modal-title" id="modalTitle">Add Habit</div>
         <div class="form-group">
-            <label class="form-label">習慣名稱</label>
+            <label class="form-label">Habit Name</label>
             <input type="text" id="habitNameInput" class="form-input"
-                   placeholder="例：晚上12點前上床睡覺" maxlength="30">
+                   placeholder="e.g. In bed before midnight" maxlength="40">
         </div>
         <div class="form-group">
-            <label class="form-label">選一個圖示</label>
+            <label class="form-label">Choose an Icon</label>
             <div class="emoji-grid" id="emojiGrid"></div>
         </div>
-        <button class="btn-primary" onclick="saveHabit()">儲存</button>
+        <button class="btn-primary" onclick="saveHabit()">Save</button>
         <button class="btn-primary btn-danger" id="deleteHabitBtn"
-                onclick="deleteHabit()" style="display:none;margin-top:10px">🗑 刪除這個習慣</button>
-        <button class="btn-secondary" onclick="closeModal('habitModal')" style="margin-top:10px">取消</button>
+                onclick="deleteHabit()" style="display:none;margin-top:10px">🗑 Delete Habit</button>
+        <button class="btn-secondary" onclick="closeModal('habitModal')" style="margin-top:10px">Cancel</button>
     </div>
 </div>
 
 <script>
 /**
  * ════════════════════════════════════════════════════════════════
- *  小勝利日記 - JavaScript 核心邏輯
+ *  Daily Wins Tracker — JavaScript Core
  *
- *  DATA SCHEMA（資料結構）：
+ *  DATA SCHEMA:
  *  {
  *    "version": 1,
  *    "habits": [
@@ -552,15 +539,16 @@
  *    }
  *  }
  *
- *  儲存方式：
- *  - 主要：File System Access API (Chrome / Edge)
- *  - 備用：手動下載 / 上傳 JSON
+ *  Storage:
+ *  - Primary:  File System Access API (Chrome / Edge desktop)
+ *  - Fallback: localStorage auto-save (mobile / Safari / Firefox)
+ *  - Backup:   Manual JSON export / import
  *
  * ════════════════════════════════════════════════════════════════
  */
 
-// ── 常數 ──────────────────────────────────────────────────────
-const LS_KEY = 'dailywins_v1'; // localStorage 的鍵值（手機版用）
+// ── Constants ─────────────────────────────────────────────────
+const LS_KEY = 'dailywins_en_v1'; // separate key from Chinese version
 
 const EMOJIS = [
     '🌙','☀️','💧','🏃','📚','🥗','😴','🧘','💪','✏️',
@@ -569,29 +557,24 @@ const EMOJIS = [
 ];
 
 const DEFAULT_HABITS = [
-    { id: '1', name: '晚上12點前上床', icon: '🌙' },
-    { id: '2', name: '早上6點前起床',  icon: '☀️' },
-    { id: '3', name: '喝足夠的水',     icon: '💧' }
+    { id: '1', name: 'In bed before midnight', icon: '🌙' },
+    { id: '2', name: 'Wake up before 6am',     icon: '☀️' },
+    { id: '3', name: 'Drink enough water',      icon: '💧' }
 ];
 
-// ── 狀態變數 ──────────────────────────────────────────────────
-let appData     = null;    // 主要資料物件（記憶體中）
-let fileHandle  = null;    // File System Access API 的檔案控制代碼
-let isDirty     = false;   // 是否有未儲存的變更
-let editingId   = null;    // 正在編輯的習慣 ID
+// ── State ──────────────────────────────────────────────────────
+let appData       = null;
+let fileHandle    = null;
+let isDirty       = false;
+let editingId     = null;
 let selectedEmoji = EMOJIS[0];
-let viewMonth   = new Date().getMonth();
-let viewYear    = new Date().getFullYear();
+let viewMonth     = new Date().getMonth();
+let viewYear      = new Date().getFullYear();
 
-// ── 工具函式 ──────────────────────────────────────────────────
-/** 補零：將數字補成兩位字串 */
+// ── Utilities ─────────────────────────────────────────────────
 const pad = n => String(n).padStart(2, '0');
 
-/**
- * HTML 跳脫函式（防止 XSS）
- * 所有來自使用者資料（習慣名稱、圖示）在插入 innerHTML 前都必須先通過這個函式。
- * Escape user-supplied strings before inserting into innerHTML to prevent XSS.
- */
+/** Escape HTML to prevent XSS from user-supplied data */
 function escapeHTML(str) {
     return String(str)
         .replace(/&/g, '&amp;')
@@ -601,24 +584,18 @@ function escapeHTML(str) {
         .replace(/'/g, '&#39;');
 }
 
-/** 取得今天的日期字串 YYYY-MM-DD */
 function todayKey() {
     const d = new Date();
     return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 }
-
-/** 將 Date 物件轉成 YYYY-MM-DD 字串 */
 function dateKey(d) {
     return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 }
 
-// ── 資料初始化 ────────────────────────────────────────────────
-/** 建立空白的資料結構 */
+// ── Data ──────────────────────────────────────────────────────
 function createEmptyData() {
     return { version: 1, habits: [...DEFAULT_HABITS], completions: {} };
 }
-
-/** 將 JSON 字串解析為資料物件，失敗時回傳 null */
 function parseData(jsonStr) {
     try {
         const d = JSON.parse(jsonStr);
@@ -627,54 +604,36 @@ function parseData(jsonStr) {
     return null;
 }
 
-// ── 平台偵測 ──────────────────────────────────────────────────
-/**
- * 是否支援 File System Access API（桌機 Chrome / Edge 86+）
- * 不支援時（手機、Safari、Firefox）改用 localStorage 自動儲存。
- */
+// ── Platform Detection ────────────────────────────────────────
 const supportsFileSystemAccess = !!window.showOpenFilePicker;
 
-/**
- * 手機模式：將資料自動存入 localStorage
- * 每次資料有變更時自動呼叫，使用者不需要手動存檔。
- */
 function autoSaveToLocalStorage() {
-    try {
-        localStorage.setItem(LS_KEY, JSON.stringify(appData));
-    } catch(e) {
-        console.warn('localStorage 儲存失敗：', e);
-    }
+    try { localStorage.setItem(LS_KEY, JSON.stringify(appData)); }
+    catch(e) { console.warn('localStorage save failed:', e); }
 }
 
-/**
- * 開啟已有的 JSON 資料檔案
- * 支援 File System Access API 的瀏覽器會記住 fileHandle，可直接存回去
- */
+// ── File System Access API ────────────────────────────────────
 async function openExistingFile() {
     if (supportsFileSystemAccess) {
         try {
             const [handle] = await window.showOpenFilePicker({
-                types: [{ description: '小勝利日記資料', accept: { 'application/json': ['.json'] } }],
+                types: [{ description: 'Daily Wins Data', accept: { 'application/json': ['.json'] } }],
                 multiple: false
             });
             fileHandle = handle;
             const file = await handle.getFile();
-            const text = await file.text();
-            const data = parseData(text);
-            if (!data) { alert('❌ 無法讀取檔案，格式不正確'); return; }
-            appData  = data;
-            isDirty  = false;
+            const data = parseData(await file.text());
+            if (!data) { alert('❌ Cannot read file: invalid format'); return; }
+            appData = data; isDirty = false;
             showApp();
         } catch(e) {
-            if (e.name !== 'AbortError') alert('❌ 開啟失敗：' + e.message);
+            if (e.name !== 'AbortError') alert('❌ Open failed: ' + e.message);
         }
     } else {
-        // 備用：input[type=file]
         document.getElementById('importFile').onchange = async (e) => {
             const f = e.target.files[0]; if (!f) return;
-            const text = await f.text();
-            const data = parseData(text);
-            if (!data) { alert('❌ 無法讀取檔案'); return; }
+            const data = parseData(await f.text());
+            if (!data) { alert('❌ Cannot read file'); return; }
             appData = data; isDirty = false;
             e.target.value = '';
             showApp();
@@ -683,170 +642,124 @@ async function openExistingFile() {
     }
 }
 
-/** 全新開始，使用預設習慣 */
 function startFresh() {
-    appData    = createEmptyData();
-    fileHandle = null;
-    isDirty    = false;
-    if (!supportsFileSystemAccess) autoSaveToLocalStorage(); // 手機版立即存入
+    appData = createEmptyData(); fileHandle = null; isDirty = false;
+    if (!supportsFileSystemAccess) autoSaveToLocalStorage();
     showApp();
 }
 
-/** 儲存到已知的 fileHandle（若沒有則呼叫 saveAsNewFile） */
 async function saveToFile() {
     if (!supportsFileSystemAccess) { exportJSON(); return; }
     if (!fileHandle) { await saveAsNewFile(); return; }
     try {
-        const writable = await fileHandle.createWritable();
-        await writable.write(JSON.stringify(appData, null, 2));
-        await writable.close();
+        const w = await fileHandle.createWritable();
+        await w.write(JSON.stringify(appData, null, 2));
+        await w.close();
         markSaved();
     } catch(e) {
-        if (e.name !== 'AbortError') alert('❌ 儲存失敗：' + e.message);
+        if (e.name !== 'AbortError') alert('❌ Save failed: ' + e.message);
     }
 }
 
-/** 另存新檔：讓使用者選擇儲存路徑 */
 async function saveAsNewFile() {
     if (!supportsFileSystemAccess) { exportJSON(); return; }
     try {
         const handle = await window.showSaveFilePicker({
-            suggestedName: `小勝利日記_${todayKey()}.json`,
-            types: [{ description: '小勝利日記資料', accept: { 'application/json': ['.json'] } }]
+            suggestedName: `DailyWins_${todayKey()}.json`,
+            types: [{ description: 'Daily Wins Data', accept: { 'application/json': ['.json'] } }]
         });
         fileHandle = handle;
-        const writable = await handle.createWritable();
-        await writable.write(JSON.stringify(appData, null, 2));
-        await writable.close();
-        markSaved();
-        updateFilePathDisplay();
+        const w = await handle.createWritable();
+        await w.write(JSON.stringify(appData, null, 2));
+        await w.close();
+        markSaved(); updateFilePathDisplay();
     } catch(e) {
-        if (e.name !== 'AbortError') alert('❌ 儲存失敗：' + e.message);
+        if (e.name !== 'AbortError') alert('❌ Save failed: ' + e.message);
     }
 }
 
-/** 備用匯出：傳統下載 JSON */
 function exportJSON() {
     const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `小勝利日記_${todayKey()}.json`;
+    a.download = `DailyWins_${todayKey()}.json`;
     a.click();
 }
 
-/** 備用匯入：傳統上傳 JSON */
 function importJSON() {
-    document.getElementById('importFile').onchange = null; // 清除 open file 的監聽
+    document.getElementById('importFile').onchange = null;
     document.getElementById('importFile').onchange = handleImportJSON;
     document.getElementById('importFile').click();
 }
 async function handleImportJSON(e) {
     const f = e.target.files[0]; if (!f) return;
-    const text = await f.text();
-    const data = parseData(text);
-    if (!data) { alert('❌ 無法讀取：格式不正確'); return; }
-    appData = data;
-    markDirty();
-    renderAll();
-    alert('✅ 匯入成功！請記得存檔。');
+    const data = parseData(await f.text());
+    if (!data) { alert('❌ Cannot read: invalid format'); return; }
+    appData = data; markDirty(); renderAll();
+    alert('✅ Import successful! Remember to save.');
     e.target.value = '';
 }
 
-// ── 儲存狀態管理 ──────────────────────────────────────────────
+// ── Save State ────────────────────────────────────────────────
 function markDirty() {
     isDirty = true;
     if (!supportsFileSystemAccess) {
-        // 手機版：資料變更後立即自動存入 localStorage
         autoSaveToLocalStorage();
         isDirty = false;
         document.getElementById('saveBtn').classList.remove('unsaved');
-        document.getElementById('saveStatus').textContent = '✅ 已自動儲存';
+        document.getElementById('saveStatus').textContent = '✅ Auto-saved';
     } else {
-        // 桌機版：標記未儲存，等使用者手動按存檔
         document.getElementById('saveBtn').classList.add('unsaved');
-        document.getElementById('saveStatus').textContent = '⚠️ 有未儲存的變更';
+        document.getElementById('saveStatus').textContent = '⚠️ Unsaved changes';
     }
 }
 function markSaved() {
     isDirty = false;
     document.getElementById('saveBtn').classList.remove('unsaved');
-    document.getElementById('saveStatus').textContent = '✅ 已儲存';
+    document.getElementById('saveStatus').textContent = '✅ Saved';
 }
 
-/** 更新「習慣」頁面中的儲存模式說明 */
 async function updateFilePathDisplay() {
     const el = document.getElementById('filePathInfo');
     if (!supportsFileSystemAccess) {
-        // 手機版
-        el.textContent = '📱 手機模式：資料自動儲存在此瀏覽器中。建議定期匯出 JSON 備份。';
+        el.textContent = '📱 Mobile mode: data is auto-saved in this browser. Export JSON regularly for backup.';
     } else if (fileHandle) {
-        el.textContent = `💾 目前檔案：${fileHandle.name}`;
+        el.textContent = `💾 Current file: ${fileHandle.name}`;
     } else {
-        el.textContent = '⚠️ 尚未連結到任何檔案（記得存檔！）';
+        el.textContent = '⚠️ Not linked to any file (remember to save!)';
     }
 }
 
-// ── 顯示主介面 ────────────────────────────────────────────────
+// ── Show App ──────────────────────────────────────────────────
 function showApp() {
     document.getElementById('welcomeScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
     document.getElementById('saveBar').style.display = 'flex';
-    updateFilePathDisplay();
-    renderAll();
+    updateFilePathDisplay(); renderAll();
     if (supportsFileSystemAccess) {
-        // 桌機版：離開前提醒（若有未儲存變更）
-        window.onbeforeunload = () => isDirty ? '有未儲存的資料，確定要離開嗎？' : null;
+        window.onbeforeunload = () => isDirty ? 'You have unsaved changes. Are you sure you want to leave?' : null;
     }
 }
 
-/**
- * 手機版初始化：頁面載入時自動檢查 localStorage
- * - 有資料 → 直接進入主介面（不顯示歡迎畫面）
- * - 沒有資料 → 顯示簡化的歡迎畫面
- */
-function initMobileApp() {
-    const saved = localStorage.getItem(LS_KEY);
-    if (saved) {
-        const data = parseData(saved);
-        if (data) {
-            appData = data;
-            isDirty = false;
-            showApp();
-            return;
-        }
-    }
-    // 沒有舊資料，更新歡迎畫面為手機版樣式
-    document.querySelector('.welcome-warning').innerHTML = `
-        <p>📱 <strong>手機版說明</strong><br>
-        您的資料會自動儲存在瀏覽器裡，<br>
-        建議定期到「習慣」頁面匯出 JSON 備份。</p>`;
-    document.querySelector('#welcomeScreen button:first-of-type').style.display = 'none';
-}
-
-// ── 統一重新渲染 ──────────────────────────────────────────────
-function renderAll() {
-    updateHeader();
-    renderToday();
-}
+function renderAll() { updateHeader(); renderToday(); }
 
 // ── Header ────────────────────────────────────────────────────
 function updateHeader() {
-    const now  = new Date();
-    const days = ['日','一','二','三','四','五','六'];
+    const now    = new Date();
+    const days   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     document.getElementById('dateText').textContent =
-        `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 星期${days[now.getDay()]}`;
+        `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
     const h = now.getHours();
     document.getElementById('greeting').textContent =
-        h < 5 ? '深夜好 🌙' : h < 12 ? '早安 ☀️' : h < 18 ? '午安 🌤' : '晚安 🌛';
+        h < 5 ? 'Good night 🌙' : h < 12 ? 'Good morning ☀️' : h < 18 ? 'Good afternoon 🌤' : 'Good evening 🌛';
     document.getElementById('streakNum').textContent = calcStreak();
 }
 
-// ── 連續天數計算 ──────────────────────────────────────────────
-/** 計算「全部習慣都完成」的連續天數 */
+// ── Streak ────────────────────────────────────────────────────
 function calcStreak() {
     if (!appData || !appData.habits.length) return 0;
-    let streak = 0;
-    const today = new Date();
+    let streak = 0; const today = new Date();
     for (let i = 0; i < 365; i++) {
         const d = new Date(today); d.setDate(d.getDate() - i);
         const c = appData.completions[dateKey(d)] || [];
@@ -855,11 +768,8 @@ function calcStreak() {
     }
     return streak;
 }
-
-/** 計算單一習慣的連續天數 */
 function calcHabitStreak(id) {
-    let streak = 0;
-    const today = new Date();
+    let streak = 0; const today = new Date();
     for (let i = 0; i < 365; i++) {
         const d = new Date(today); d.setDate(d.getDate() - i);
         const c = appData.completions[dateKey(d)] || [];
@@ -868,13 +778,10 @@ function calcHabitStreak(id) {
     return streak;
 }
 
-// ── 今天頁面 ──────────────────────────────────────────────────
+// ── Today ─────────────────────────────────────────────────────
 function renderToday() {
-    const key   = todayKey();
-    const comps = appData.completions[key] || [];
-    const done  = comps.length;
-    const total = appData.habits.length;
-
+    const key = todayKey(), comps = appData.completions[key] || [];
+    const done = comps.length, total = appData.habits.length;
     document.getElementById('progressCount').textContent = `${done} / ${total}`;
     document.getElementById('progressBar').style.width   = total ? `${(done/total)*100}%` : '0%';
     document.getElementById('completionBanner').style.display =
@@ -883,17 +790,16 @@ function renderToday() {
     const list = document.getElementById('habitList');
     if (!appData.habits.length) {
         list.innerHTML = `<div class="empty-state"><div class="empty-icon">🌱</div>
-            <p>還沒有習慣<br>點下面的「新增習慣」開始吧！</p></div>`;
+            <p>No habits yet!<br>Tap "+ Add Habit" below to get started.</p></div>`;
         return;
     }
     list.innerHTML = appData.habits.map(h => {
-        const isCompleted = comps.includes(h.id);
-        const s = calcHabitStreak(h.id);
-        return `<div class="habit-item${isCompleted?' completed':''}" onclick="toggleHabit('${escapeHTML(h.id)}')">
+        const done = comps.includes(h.id), s = calcHabitStreak(h.id);
+        return `<div class="habit-item${done?' completed':''}" onclick="toggleHabit('${escapeHTML(h.id)}')">
             <div class="habit-icon">${escapeHTML(h.icon)}</div>
             <div class="habit-info">
                 <div class="habit-name">${escapeHTML(h.name)}</div>
-                <div class="habit-streak">${s > 0 ? `🔥 連續 ${s} 天` : '今天加油！'}</div>
+                <div class="habit-streak">${s > 0 ? `🔥 ${s}-day streak` : 'Keep it up today!'}</div>
             </div>
             <div class="habit-check">
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
@@ -902,19 +808,15 @@ function renderToday() {
     }).join('');
 }
 
-/** 切換習慣的完成狀態 */
 function toggleHabit(id) {
     const key = todayKey();
     if (!appData.completions[key]) appData.completions[key] = [];
     const idx = appData.completions[key].indexOf(id);
     if (idx === -1) { appData.completions[key].push(id); celebrate(); }
     else            { appData.completions[key].splice(idx, 1); }
-    markDirty();
-    renderToday();
-    updateHeader();
+    markDirty(); renderToday(); updateHeader();
 }
 
-/** 慶祝粒子動畫 */
 function celebrate() {
     const fx = ['⭐','✨','🎉','💫','🌟','🎊'];
     for (let i = 0; i < 6; i++) {
@@ -930,27 +832,19 @@ function celebrate() {
     }
 }
 
-// ── 本週頁面 ──────────────────────────────────────────────────
+// ── Week ──────────────────────────────────────────────────────
 function renderWeek() {
     const today = new Date();
     const start = new Date(today); start.setDate(today.getDate() - today.getDay());
-    const days  = ['日','一','二','三','四','五','六'];
-    let totalDone = 0, totalPoss = 0, perfect = 0;
-    let html = '';
+    const days  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    let totalDone = 0, totalPoss = 0, perfect = 0, html = '';
 
     for (let i = 0; i < 7; i++) {
         const d = new Date(start); d.setDate(start.getDate() + i);
-        const key     = dateKey(d);
-        const isToday = key === todayKey();
-        const isFuture = d > today;
-        const c     = appData.completions[key] || [];
-        const total = appData.habits.length;
-        const pct   = total ? c.length / total : 0;
-
-        if (!isFuture && total > 0) {
-            totalDone += c.length; totalPoss += total;
-            if (pct === 1) perfect++;
-        }
+        const key = dateKey(d), isToday = key === todayKey(), isFuture = d > today;
+        const c = appData.completions[key] || [], total = appData.habits.length;
+        const pct = total ? c.length / total : 0;
+        if (!isFuture && total > 0) { totalDone += c.length; totalPoss += total; if(pct===1) perfect++; }
         let style = '';
         if (!isFuture && total > 0) {
             const a = (0.15 + pct * 0.85).toFixed(2);
@@ -962,69 +856,61 @@ function renderWeek() {
                 ${isFuture ? '·' : (total ? Math.round(pct*100)+'%' : '-')}
             </div></div>`;
     }
-
     document.getElementById('weekGrid').innerHTML = html;
     document.getElementById('weekStats').innerHTML = `
-        <div class="stat-card"><div class="stat-num">${totalPoss ? Math.round(totalDone/totalPoss*100) : 0}%</div><div class="stat-label">完成率</div></div>
-        <div class="stat-card"><div class="stat-num">${perfect}</div><div class="stat-label">全勤天數</div></div>
-        <div class="stat-card"><div class="stat-num">${calcStreak()}</div><div class="stat-label">🔥 連續</div></div>`;
+        <div class="stat-card"><div class="stat-num">${totalPoss?Math.round(totalDone/totalPoss*100):0}%</div><div class="stat-label">Completion</div></div>
+        <div class="stat-card"><div class="stat-num">${perfect}</div><div class="stat-label">Perfect Days</div></div>
+        <div class="stat-card"><div class="stat-num">${calcStreak()}</div><div class="stat-label">🔥 Streak</div></div>`;
 }
 
-// ── 本月熱力圖 ────────────────────────────────────────────────
+// ── Month ─────────────────────────────────────────────────────
 function renderMonth() {
     const today = new Date();
     const first = new Date(viewYear, viewMonth, 1);
     const last  = new Date(viewYear, viewMonth + 1, 0);
-    const mNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-    document.getElementById('monthTitle').textContent = `${viewYear}年 ${mNames[viewMonth]}`;
+    const mNames = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+    document.getElementById('monthTitle').textContent = `${mNames[viewMonth]} ${viewYear}`;
 
     let html = '';
-    // 月初前的空白格
     for (let i = 0; i < first.getDay(); i++) html += `<div class="month-cell empty"></div>`;
-
     let done100 = 0, daysTotal = 0;
     for (let day = 1; day <= last.getDate(); day++) {
-        const d     = new Date(viewYear, viewMonth, day);
-        const key   = dateKey(d);
-        const isToday  = key === todayKey();
-        const isFuture = d > today;
-        const c     = appData.completions[key] || [];
-        const total = appData.habits.length;
-        const pct   = total ? c.length / total : 0;
-
+        const d = new Date(viewYear, viewMonth, day);
+        const key = dateKey(d), isToday = key === todayKey(), isFuture = d > today;
+        const c = appData.completions[key] || [], total = appData.habits.length;
+        const pct = total ? c.length / total : 0;
         let heat = 'heat-none';
         if (!isFuture && total > 0) {
             daysTotal++;
-            if (pct === 1) { heat = 'heat-100'; done100++; }
-            else if (pct >= 0.75) heat = 'heat-75';
-            else if (pct >= 0.5)  heat = 'heat-50';
-            else if (pct > 0)     heat = 'heat-25';
-            else                   heat = 'heat-0';
+            if (pct===1) { heat='heat-100'; done100++; }
+            else if (pct>=0.75) heat='heat-75';
+            else if (pct>=0.5)  heat='heat-50';
+            else if (pct>0)     heat='heat-25';
+            else                heat='heat-0';
         } else if (!isFuture) { heat = 'heat-0'; }
-
         html += `<div class="month-cell ${heat}${isToday?' today':''}">${day}</div>`;
     }
-
     document.getElementById('monthGrid').innerHTML = html;
     document.getElementById('monthStats').innerHTML = `
-        <div class="stat-card"><div class="stat-num">${done100}</div><div class="stat-label">完美天數 🏆</div></div>
-        <div class="stat-card"><div class="stat-num">${daysTotal ? Math.round(done100/daysTotal*100) : 0}%</div><div class="stat-label">全勤率</div></div>
-        <div class="stat-card"><div class="stat-num">${calcStreak()}</div><div class="stat-label">🔥 連續</div></div>`;
+        <div class="stat-card"><div class="stat-num">${done100}</div><div class="stat-label">Perfect Days 🏆</div></div>
+        <div class="stat-card"><div class="stat-num">${daysTotal?Math.round(done100/daysTotal*100):0}%</div><div class="stat-label">Perfect Rate</div></div>
+        <div class="stat-card"><div class="stat-num">${calcStreak()}</div><div class="stat-label">🔥 Streak</div></div>`;
 }
 
-function changeMonth(delta) {
-    viewMonth += delta;
+function changeMonth(d) {
+    viewMonth += d;
     if (viewMonth > 11) { viewMonth = 0; viewYear++; }
     if (viewMonth < 0)  { viewMonth = 11; viewYear--; }
     renderMonth();
 }
 
-// ── 習慣管理頁 ────────────────────────────────────────────────
+// ── Manage ────────────────────────────────────────────────────
 function renderManage() {
     const el = document.getElementById('manageList');
     if (!appData.habits.length) {
         el.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div>
-            <p>還沒有習慣，快來新增吧！</p></div>`;
+            <p>No habits yet. Add your first one!</p></div>`;
         return;
     }
     el.innerHTML = appData.habits.map(h => `
@@ -1036,49 +922,42 @@ function renderManage() {
     updateFilePathDisplay();
 }
 
-// ── 分頁切換 ──────────────────────────────────────────────────
+// ── Tabs ──────────────────────────────────────────────────────
 function switchTab(tab) {
-    const tabNames = ['today','week','month','manage'];
-    document.querySelectorAll('.tab').forEach((t, i) => {
-        t.classList.toggle('active', tabNames[i] === tab);
-    });
+    const names = ['today','week','month','manage'];
+    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i] === tab));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.getElementById(`tab-${tab}`).classList.add('active');
-    if (tab === 'week')   renderWeek();
-    if (tab === 'month')  renderMonth();
-    if (tab === 'manage') renderManage();
+    if (tab==='week')   renderWeek();
+    if (tab==='month')  renderMonth();
+    if (tab==='manage') renderManage();
 }
 
-// ── Modal 操作 ────────────────────────────────────────────────
+// ── Modal ─────────────────────────────────────────────────────
 function openAddHabit() {
-    editingId     = null;
-    selectedEmoji = EMOJIS[0];
-    document.getElementById('modalTitle').textContent            = '新增習慣';
-    document.getElementById('habitNameInput').value              = '';
-    document.getElementById('deleteHabitBtn').style.display      = 'none';
+    editingId = null; selectedEmoji = EMOJIS[0];
+    document.getElementById('modalTitle').textContent       = 'Add Habit';
+    document.getElementById('habitNameInput').value         = '';
+    document.getElementById('deleteHabitBtn').style.display = 'none';
     renderEmojiGrid();
     document.getElementById('habitModal').classList.add('open');
     setTimeout(() => document.getElementById('habitNameInput').focus(), 300);
 }
-
 function openEditHabit(id) {
-    const h = appData.habits.find(x => x.id === id);
-    if (!h) return;
-    editingId     = id;
-    selectedEmoji = h.icon;
-    document.getElementById('modalTitle').textContent            = '編輯習慣';
-    document.getElementById('habitNameInput').value              = h.name;
-    document.getElementById('deleteHabitBtn').style.display      = 'block';
+    const h = appData.habits.find(x => x.id === id); if (!h) return;
+    editingId = id; selectedEmoji = h.icon;
+    document.getElementById('modalTitle').textContent       = 'Edit Habit';
+    document.getElementById('habitNameInput').value         = h.name;
+    document.getElementById('deleteHabitBtn').style.display = 'block';
     renderEmojiGrid();
     document.getElementById('habitModal').classList.add('open');
 }
-
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function handleOverlayClick(e) { if (e.target === e.currentTarget) closeModal('habitModal'); }
 
 function renderEmojiGrid() {
     document.getElementById('emojiGrid').innerHTML = EMOJIS.map(e =>
-        `<div class="emoji-option${e === selectedEmoji ? ' selected' : ''}" onclick="selectEmoji('${e}')">${e}</div>`
+        `<div class="emoji-option${e===selectedEmoji?' selected':''}" onclick="selectEmoji('${e}')">${e}</div>`
     ).join('');
 }
 function selectEmoji(e) { selectedEmoji = e; renderEmojiGrid(); }
@@ -1086,42 +965,48 @@ function selectEmoji(e) { selectedEmoji = e; renderEmojiGrid(); }
 function saveHabit() {
     const name = document.getElementById('habitNameInput').value.trim();
     if (!name) { document.getElementById('habitNameInput').focus(); return; }
-
     if (editingId) {
         const h = appData.habits.find(x => x.id === editingId);
         if (h) { h.name = name; h.icon = selectedEmoji; }
     } else {
         appData.habits.push({ id: Date.now().toString(), name, icon: selectedEmoji });
     }
-    markDirty();
-    closeModal('habitModal');
+    markDirty(); closeModal('habitModal');
     renderToday(); renderManage(); updateHeader();
 }
-
 function deleteHabit() {
-    if (!editingId) return;
-    if (!confirm('確定要刪除這個習慣嗎？\n（過去的打卡記錄不會消失）')) return;
+    if (!editingId || !confirm('Delete this habit?\n(Your past completion records won\'t be deleted)')) return;
     appData.habits = appData.habits.filter(h => h.id !== editingId);
-    markDirty();
-    closeModal('habitModal');
+    markDirty(); closeModal('habitModal');
     renderToday(); renderManage(); updateHeader();
 }
 
-// ── 啟動 ──────────────────────────────────────────────────────
-if (!supportsFileSystemAccess) {
-    // 手機版：自動從 localStorage 載入，或顯示簡化歡迎畫面
-    initMobileApp();
+// ── Mobile Init ───────────────────────────────────────────────
+function initMobileApp() {
+    const saved = localStorage.getItem(LS_KEY);
+    if (saved) {
+        const data = parseData(saved);
+        if (data) { appData = data; isDirty = false; showApp(); return; }
+    }
+    // No saved data — update welcome screen for mobile
+    document.querySelector('.welcome-warning').innerHTML = `
+        <p>📱 <strong>Mobile Mode</strong><br>
+        Your data is auto-saved in this browser.<br>
+        Export JSON regularly as a backup.</p>`;
+    document.querySelector('#welcomeScreen button:first-of-type').style.display = 'none';
 }
-// 桌機版：歡迎畫面預設已顯示，等使用者按按鈕
+
+// ── Boot ──────────────────────────────────────────────────────
+if (!supportsFileSystemAccess) { initMobileApp(); }
 
 /**
  * ════════════════════════════════════════════════════════════════
  *  END OF SCRIPT
- *  若您是工程師，歡迎修改！主要擴展點：
- *  - 習慣分類 / 標籤
- *  - 目標時間提醒（搭配 Notification API）
- *  - 雲端同步（搭配 Firebase / Supabase）
- *  - 深色模式（修改 CSS 變數即可）
+ *  Want to extend this? Some ideas:
+ *  - Reminders: Web Notifications API
+ *  - Cloud sync: Firebase or Supabase
+ *  - Dark mode: override :root CSS variables
+ *  - Categories: add a "category" field to the habit schema
  * ════════════════════════════════════════════════════════════════
  */
 </script>
