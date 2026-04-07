@@ -7,12 +7,16 @@
 [![Single File](https://img.shields.io/badge/size-single%20HTML%20file-brightgreen)](./DailyWins.html)
 [![No Install](https://img.shields.io/badge/install-none%20required-blue)](./DailyWins.html)
 
+<br>
+
+[⬇️ 下載中文版](https://github.com/yingchu/Daily-wins/raw/main/DailyWins/DailyWins.html)　　[⬇️ Download English Version](https://github.com/yingchu/Daily-wins/raw/main/DailyWins/DailyWins_en.html)
+
 ---
 
 ## 為什麼要做這個？ / Why?
 
 健康手環和大型 App 的習慣追蹤功能，用起來往往沒什麼成就感——通知太多、介面太複雜。
-這個工具只做一件事：**讓你每天打幾個勾，自我感覺良好，持續達到目標。**
+這個工具只做一件事：**讓你每天打幾個勾，然後感覺很好。**
 
 Most habit-tracking apps feel overwhelming. Notifications. Subscriptions. Too many features.
 This tool does one thing well: **let you check off your daily habits and feel great about it.**
@@ -42,7 +46,7 @@ This tool does one thing well: **let you check off your daily habits and feel gr
 
 ### 最簡單的方式 / Easiest way
 
-1. 下載 `DailyWins.html` / Download `DailyWins.html`
+1. 下載 `小勝利日記.html` / Download `小勝利日記.html`
 2. 雙擊開啟（建議用 Chrome 或 Edge）/ Double-click to open (Chrome or Edge recommended)
 3. 選擇「全新開始」或開啟已有的資料檔 / Choose "Start Fresh" or open an existing data file
 4. 開始打勾！/ Start checking off habits!
@@ -171,4 +175,4 @@ Free to use, modify, and redistribute.
 
 ---
 
-*Made with ❤️ as part of [Project Eva](https://github.com/yingchu/Daily-wins) — building small tools for a better daily life.*
+*Made with ❤️ as part of [Project Eva](https://github.com/yingchu/Daily-wins) — building small tools for a positive daily life.*
