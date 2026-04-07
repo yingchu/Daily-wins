@@ -9,7 +9,7 @@
 
 <br>
 
-[⬇️ 下載中文版](https://github.com/yingchu/Daily-wins/raw/main/DailyWins/DailyWins.html)　　[⬇️ Download English Version](https://github.com/yingchu/Daily-wins/raw/main/DailyWins/DailyWins_en.html)
+[⬇️ 下載中文版](https://github.com/yingchu/Daily-wins/raw/main/DailyWins.html)　　[⬇️ Download English Version](https://github.com/yingchu/Daily-wins/raw/main/DailyWins_en.html)
 
 ---
 
